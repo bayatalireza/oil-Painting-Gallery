@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+<h1>{{ artwork.title }}</h1>
+<img src="{{ artwork.main_image.url }}" alt="{{ artwork.title }}" />
+<p>قیمت: {{ artwork.price }}</p>
+{% if user.is_authenticated %}
+<form method="post" action="{% url 'orders:cart_add' artwork.id %}">
+  {% csrf_token %}
+  <button type="submit">افزودن به سبد خرید</button>
+</form>
+{% endif %} {% endblock %}

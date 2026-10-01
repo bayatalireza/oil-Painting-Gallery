@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>سبد خرید</h2>
+{% for item in items %}
+  <p>{{ item.artwork.title }} - {{ item.artwork.price }}
+  <form method="post" action="{% url 'orders:cart_remove' item.id %}" style="display:inline">
+    {% csrf_token %}<button type="submit">حذف</button>
+  </form></p>
+{% empty %}
+  <p>سبد خرید خالی است.</p>
+{% endfor %}
+<p><strong>جمع کل: {{ total }}</strong></p>
+{% endblock %}

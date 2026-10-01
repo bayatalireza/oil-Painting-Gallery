@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>گالری نقاشی</title>
+  </head>
+  <body>
+    {% if messages %}{% for m in messages %}
+    <p>{{ m }}</p>
+    {% endfor %}{% endif %} {% block content %}{% endblock %}
+  </body>
+</html>

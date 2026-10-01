@@ -1,0 +1,9 @@
+{% extends 'base.html' %} {% block content %}
+<h2>ثبت / ویرایش اثر</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %} {{ form.as_p }}
+  <h3>تصاویر گالری</h3>
+  {{ formset.management_form }} {% for f in formset %}{{ f.as_p }}{% endfor %}
+  <button type="submit">ذخیره</button>
+</form>
+{% endblock %}
