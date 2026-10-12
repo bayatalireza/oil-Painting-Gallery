@@ -26,7 +26,8 @@ INSTALLED_APPS = [
     'apps.dashboard.apps.DashboardConfig',
     # امنیت
     'axes',        # قفل‌کردن حساب پس از تلاش‌های ناموفق ورود
-    'csp',          # هدر Content-Security-Policy
+    'csp',  
+    'imagekit',        # هدر Content-Security-Policy
 ]
 
 MIDDLEWARE = [

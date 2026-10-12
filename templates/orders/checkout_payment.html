@@ -1,0 +1,8 @@
+{% extends 'base.html' %} {% block content %}
+<p>مرحله ۲ از ۳: روش پرداخت</p>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">ادامه به تأیید نهایی</button>
+</form>
+<a href="{% url 'orders:checkout_address' %}">بازگشت به مرحله قبل</a>
+{% endblock %}

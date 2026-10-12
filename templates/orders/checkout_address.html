@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% block content %}
+<p>مرحله ۱ از ۳: آدرس ارسال</p>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">ادامه به پرداخت</button>
+</form>
+{% endblock %}

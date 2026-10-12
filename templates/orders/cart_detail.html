@@ -10,4 +10,8 @@
   <p>سبد خرید خالی است.</p>
 {% endfor %}
 <p><strong>جمع کل: {{ total }}</strong></p>
+{% if items %}
+  <a href="{% url 'orders:checkout_address' %}">ادامه به تسویه‌حساب</a>
+{% endif %}
+
 {% endblock %}

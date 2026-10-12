@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+<p>مرحله ۳ از ۳: تأیید نهایی</p>
+{% for item in items %}
+<p>{{ item.artwork.title }} - {{ item.artwork.price }}</p>
+{% endfor %}
+<p><strong>جمع کل: {{ total }}</strong></p>
+<p>آدرس: {{ address }}</p>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">ثبت نهایی سفارش</button>
+</form>
+{% endblock %}

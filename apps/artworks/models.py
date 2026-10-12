@@ -2,6 +2,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from apps.accounts.models import User
 from .validators import validate_artwork_image
+from imagekit.models import ImageSpecField
+from imagekit.processors import ResizeToFit
 
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -51,3 +53,12 @@ class VisitHistory(models.Model):
     artwork = models.ForeignKey(Artwork, on_delete=models.CASCADE)
     visited_at = models.DateTimeField(auto_now_add=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
+
+class Artwork(models.Model):
+    ...
+    main_image_thumbnail = ImageSpecField(
+        source='main_image',
+        processors=[ResizeToFit(400, 400)],
+        format='JPEG',
+        options={'quality': 70},
+    )
