@@ -33,6 +33,12 @@ class Artwork(models.Model):
     is_featured = models.BooleanField(default=False, verbose_name='ویژه')
     views_count = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+    main_image_thumbnail = ImageSpecField(
+        source='main_image',
+        processors=[ResizeToFit(400, 400)],
+        format='JPEG',
+        options={'quality': 70},
+    )
 
     def __str__(self): return self.title
 
@@ -54,11 +60,3 @@ class VisitHistory(models.Model):
     visited_at = models.DateTimeField(auto_now_add=True)
     ip_address = models.GenericIPAddressField(null=True, blank=True)
 
-class Artwork(models.Model):
-    ...
-    main_image_thumbnail = ImageSpecField(
-        source='main_image',
-        processors=[ResizeToFit(400, 400)],
-        format='JPEG',
-        options={'quality': 70},
-    )
