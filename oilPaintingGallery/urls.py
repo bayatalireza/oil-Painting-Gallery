@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
+from apps.artworks import views as artworks_views
 
 
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/artworks/', permanent=False), name='home'),
+
+    path('', artworks_views.home, name='home'),
+    path('reviews/', include('apps.reviews.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('apps.accounts.urls')),
     path('artworks/', include('apps.artworks.urls')),

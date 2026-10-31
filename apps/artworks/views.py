@@ -1,9 +1,10 @@
+from apps.reviews.forms import ReviewForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models import F
 from apps.accounts.decorators import role_required
-from .models import Artwork, VisitHistory
+from .models import Artwork, VisitHistory,Wishlist
 from .forms import ArtworkForm, ArtworkImageFormSet
 
 @role_required(['artist', 'admin'])
@@ -74,4 +75,36 @@ def artwork_detail(request, slug):
         ip_address=request.META.get('REMOTE_ADDR'),
     )
     related = Artwork.objects.filter(category=artwork.category, status='available').exclude(pk=artwork.pk)[:4]
-    return render(request, 'artworks/artwork_detail.html', {'artwork': artwork, 'related': related})
+    reviews = artwork.reviews.filter(is_approved=True).order_by('-created_at')
+    user_review = artwork.reviews.filter(user=request.user).first() if request.user.is_authenticated else None
+    in_wishlist = request.user.is_authenticated and Wishlist.objects.filter(user=request.user, artwork=artwork).exists()
+    return render(request, 'artworks/artwork_detail.html', {
+    'artwork': artwork, 'related': related,
+    'reviews': reviews, 'review_form': ReviewForm(),
+    'user_review': user_review, 'in_wishlist': in_wishlist,
+})
+
+
+
+def home(request):
+    featured_artworks = Artwork.objects.filter(is_featured=True, status='available')[:8]
+    latest_artworks = Artwork.objects.filter(status='available').order_by('-created_at')[:8]
+    return render(request, 'home.html', {
+        'featured_artworks': featured_artworks,
+        'latest_artworks': latest_artworks,
+    })
+@login_required
+def wishlist_toggle(request, slug):
+    artwork = get_object_or_404(Artwork, slug=slug)
+    item, created = Wishlist.objects.get_or_create(user=request.user, artwork=artwork)
+    if created:
+        messages.success(request, 'به علاقه‌مندی‌ها اضافه شد.')
+    else:
+        item.delete()
+        messages.success(request, 'از علاقه‌مندی‌ها حذف شد.')
+    return redirect('artworks:detail', slug=slug)
+
+@login_required
+def my_wishlist(request):
+    items = Wishlist.objects.filter(user=request.user).select_related('artwork').order_by('-created_at')
+    return render(request, 'artworks/my_wishlist.html', {'items': items})

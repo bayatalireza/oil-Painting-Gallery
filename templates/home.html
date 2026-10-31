@@ -1,0 +1,62 @@
+{% extends 'base.html' %} {% block content %}
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .card img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+  }
+  .card-body {
+    padding: 12px;
+  }
+  .card-body a {
+    text-decoration: none;
+    color: #222;
+  }
+</style>
+
+<h1>گالری نقاشی</h1>
+
+<h2>آثار ویژه</h2>
+<div class="grid">
+  {% for artwork in featured_artworks %}
+  <div class="card">
+    {% if artwork.main_image %}
+    <img src="{{ artwork.main_image.url }}" alt="{{ artwork.title }}" />
+    {% endif %}
+    <div class="card-body">
+      <a href="{% url 'artworks:detail' artwork.slug %}">{{ artwork.title }}</a>
+      <p>{{ artwork.price }}</p>
+    </div>
+  </div>
+  {% empty %}
+  <p>هنوز اثر ویژه‌ای ثبت نشده است.</p>
+  {% endfor %}
+</div>
+
+<h2>جدیدترین آثار</h2>
+<div class="grid">
+  {% for artwork in latest_artworks %}
+  <div class="card">
+    {% if artwork.main_image %}
+    <img src="{{ artwork.main_image.url }}" alt="{{ artwork.title }}" />
+    {% endif %}
+    <div class="card-body">
+      <a href="{% url 'artworks:detail' artwork.slug %}">{{ artwork.title }}</a>
+      <p>{{ artwork.price }}</p>
+    </div>
+  </div>
+  {% empty %}
+  <p>هنوز اثری ثبت نشده است.</p>
+  {% endfor %}
+</div>
+{% endblock %}

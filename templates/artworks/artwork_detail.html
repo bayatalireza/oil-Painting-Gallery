@@ -2,9 +2,35 @@
 <h1>{{ artwork.title }}</h1>
 <img src="{{ artwork.main_image.url }}" alt="{{ artwork.title }}" />
 <p>قیمت: {{ artwork.price }}</p>
+
 {% if user.is_authenticated %}
 <form method="post" action="{% url 'orders:cart_add' artwork.id %}">
   {% csrf_token %}
   <button type="submit">افزودن به سبد خرید</button>
 </form>
+{% endif %} {% if user.is_authenticated %}
+<a href="{% url 'artworks:wishlist_toggle' artwork.slug %}">
+  {% if in_wishlist %}حذف از علاقه‌مندی‌ها{% else %}افزودن به
+  علاقه‌مندی‌ها{%endif %}
+</a>
+{% endif %}
+
+<h2>نقدها</h2>
+{% for review in reviews %}
+<p>{{ review.user }} — {{ review.rating }}/5</p>
+<p>{{ review.comment }}</p>
+{% empty %}
+<p>هنوز نقدی ثبت نشده است.</p>
+{% endfor %} {% if user.is_authenticated %} {% if user_review %}
+<p>
+  نقد شما ثبت شده است{% if not user_review.is_approved %} و در انتظار تأیید
+  است{% endif %}.
+</p>
+{% else %}
+<form method="post" action="{% url 'reviews:add_review' artwork.slug %}">
+  {% csrf_token %} {{ review_form.as_p }}
+  <button type="submit">ثبت نقد</button>
+</form>
+{% endif %} {% else %}
+<p>برای ثبت نقد وارد شوید.</p>
 {% endif %} {% endblock %}

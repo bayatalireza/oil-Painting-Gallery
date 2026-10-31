@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+<h1>علاقه‌مندی‌های من</h1>
+{% for item in items %}
+<div>
+  <a href="{% url 'artworks:detail' item.artwork.slug %}"
+    >{{ item.artwork.title }}</a
+  >
+  <a href="{% url 'artworks:wishlist_toggle' item.artwork.slug %}">حذف</a>
+</div>
+{% empty %}
+<p>هنوز اثری به علاقه‌مندی‌ها اضافه نکرده‌اید.</p>
+{% endfor %} {% endblock %}
